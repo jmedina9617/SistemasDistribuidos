@@ -1,0 +1,285 @@
+
+<app-navbar></app-navbar>
+
+<div class="m-4">
+
+    <button class="btn btn-primary mb-4 float-left" type="button"  data-toggle="modal" data-target="#crearUsuario">
+        <i class="fas fa-plus"></i>
+        Nuevo Usuario
+    </button><br>
+
+    <!-- Modal Crear Usuario -->
+
+    <div class="modal fade" id="crearUsuario" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Nuevo Usuario</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              
+            <form (ngSubmit)="usuarioForm(formUsuario)" #formUsuario="ngForm">
+
+                <!-- tipo | estado | nombre | direccion | fechaNacimiento | email | password-->
+  
+                <div class="form-group mb-3">
+                    <label for="tipoUsuario" class="form-label">Tipo</label>
+                    <select class="form-control custom-select" 
+                            id="inputGroupSelect02"
+                            name= "tipo"
+                            required
+                            ngModel
+                            #tipo= "ngModel">
+                      <option selected disabled>-Opciones-</option>
+                      <option value="ADMIN">ADMIN</option>
+                      <option value="USUARIO">USUARIO</option> 
+                    </select>
+                </div>
+
+                <div class="form-group mb-3">
+                    <label for="nombreUsuario" class="form-label">Nombre</label>
+                    <input class="form-control"
+                           type="text" 
+                           name="nombre" 
+                           [class.is-invalid] = "nombre.invalid && nombre.touched" 
+                           required
+                           ngModel 
+                           id="nombre"
+                           #nombre ="ngModel">
+                           <small *ngIf="nombre.invalid && nombre.touched" 
+                           class="form-text text-danger">Nombre es requerido</small>
+                </div>
+
+                <div class="form-group mb-3">
+                    <label for="direccionUsuario" class="form-label">Dirección</label>
+                    <input class="form-control"
+                           type="text" 
+                           name="direccion" 
+                           [class.is-invalid] = "direccion.invalid && direccion.touched" 
+                           required
+                           ngModel 
+                           id="direccion"
+                           #direccion ="ngModel">
+                           <small *ngIf="direccion.invalid && direccion.touched" 
+                           class="form-text text-danger">Dirección es requerido</small>
+                </div>
+
+                <div class="form-group mb-3">
+                    <label for="fechaNacimientoUsuario" class="form-label">Fecha de nacimiento</label>
+                    <input type ="date" 
+                           id="todays-date" 
+                           value="" 
+                           class="form-control"
+                           name="fechaNacimiento"
+                           required
+                           ngModel
+                           id="fechaNacimiento"
+                           #fechaNacimiento="ngModel">
+                </div>
+
+                <div class="form-group mb-3">
+                    <label for="correoUsuario" class="form-label">Correo</label>
+                    <input class="form-control"
+                           type="email" 
+                           name="email" 
+                           [class.is-invalid] = "email.invalid && email.touched" 
+                           required
+                           ngModel 
+                           id="email"
+                           #email ="ngModel">
+                           <small *ngIf="email.invalid && email.touched" 
+                           class="form-text text-danger">Correo es requerido</small>
+                </div>
+
+                <div class="form-group mb-3">
+                    <label for="contrasenaUsuario" class="form-label">Contraseña</label>
+                    <input class="form-control"
+                           type="text" 
+                           name="password" 
+                           [class.is-invalid] = "password.invalid && password.touched" 
+                           required
+                           ngModel 
+                           id="password"
+                           #password ="ngModel">
+                           <small *ngIf="password.invalid && password.touched" 
+                           class="form-text text-danger">Contraseña es requerido</small>
+                </div>
+  
+                <div class="modal-footer">
+                  <button type="submit" class="btn btn-primary" (click)="usuarioForm(formUsuario)" data-dismiss="modal">Guardar</button>
+                  <button type="button" class="btn btn-danger"  data-dismiss="modal">Cancelar</button>
+                </div>
+            </form>
+  
+            </div>
+          </div>
+        </div>
+    </div>
+
+    <div class="container m-3" style="text-align: center;">
+        <h1>Usuarios</h1>
+    </div>
+
+
+    <!-- Tabla Tarifas -->
+
+    <!-- tipo | estado | nombre | direccion | fechaNacimiento | email | password-->
+
+    <table class="table table-striped">
+        <thead>
+          <tr>
+            <th scope="col">ID</th>  
+            <th scope="col">Nombre</th>
+            <th scope="col">Direccion</th>
+            <th scope="col">Email</th>
+            <th scope="col">Tipo</th>
+            <th scope="col">Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let usuario of usuariosData; let i = index">
+            <th scope="row">{{i+1}}</th>
+            <td>{{usuario.nombre}}</td>
+            <td>{{usuario.direccion}}</td>
+            <td>{{usuario.email}}</td>
+            <td>{{usuario.tipo}}</td>
+            <td>
+                <button (click)="usuarioById(usuario._id)" 
+                        class="btn btn-primary mr-1"
+                        data-toggle="modal" 
+                        data-target="#actualizarUsuario">
+                    <i class="fas fa-pen"></i>
+                </button>
+                <button class="btn btn-danger mr-1"
+                        (click)="eliminarUsuario(usuario._id)">
+                    <i class="fas fa-trash"></i>
+                </button>
+            </td>
+          </tr>
+        </tbody>
+    </table>
+
+    <!-- Modal Actualizar Usuario -->
+
+    <div class="modal fade" id="actualizarUsuario" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Actualizar Usuario</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              
+            <form (ngSubmit)="actualizarUsuarioForm(formUsuarioActualizar)" #formUsuarioActualizar="ngForm">
+ 
+                
+                <div hidden class="form-group mb-3">
+                    <label for="idUsuario" class="form-label">Id Usuario</label>
+                    <input class="form-control"
+                           type="text" 
+                           name="_id" 
+                           [(ngModel)]=usuarioId._id 
+                           id="_id"
+                           #_id ="ngModel">
+                </div>
+
+                <div class="form-group mb-3">
+                    <label for="tipoUsuario" class="form-label">Tipo</label>
+                    <select class="form-control custom-select" 
+                            id="inputGroupSelect02"
+                            name= "tipo"
+                            required
+                            [(ngModel)]=usuarioId.tipo
+                            #tipo= "ngModel">
+                      <option selected disabled>-Opciones-</option>
+                      <option value="ADMIN">ADMIN</option>
+                      <option value="USUARIO">USUARIO</option> 
+                    </select>
+                </div>
+
+                <div class="form-group mb-3">
+                    <label for="nombreUsuario" class="form-label">Nombre</label>
+                    <input class="form-control"
+                           type="text" 
+                           name="nombre" 
+                           [class.is-invalid] = "nombre.invalid && nombre.touched" 
+                           required
+                           [(ngModel)]=usuarioId.nombre
+                           id="nombre"
+                           #nombre ="ngModel">
+                           <small *ngIf="nombre.invalid && nombre.touched" 
+                           class="form-text text-danger">Nombre es requerido</small>
+                </div>
+
+                <div class="form-group mb-3">
+                    <label for="direccionUsuario" class="form-label">Dirección</label>
+                    <input class="form-control"
+                           type="text" 
+                           name="direccion" 
+                           [class.is-invalid] = "direccion.invalid && direccion.touched" 
+                           required
+                           [(ngModel)]=usuarioId.direccion 
+                           id="direccion"
+                           #direccion ="ngModel">
+                           <small *ngIf="direccion.invalid && direccion.touched" 
+                           class="form-text text-danger">Dirección es requerido</small>
+                </div>
+
+                <div class="form-group mb-3">
+                    <label for="fechaNacimientoUsuario" class="form-label">Fecha de nacimiento</label>
+                    <input type ="date" 
+                           id="todays-date" 
+                           value="" 
+                           class="form-control"
+                           name="fechaNacimiento"
+                           required
+                           [(ngModel)]=usuarioId.fechaNacimiento 
+                           id="fechaNacimiento"
+                           #fechaNacimiento="ngModel">
+                </div>
+
+                <div class="form-group mb-3">
+                    <label for="correoUsuario" class="form-label">Correo</label>
+                    <input class="form-control"
+                           type="email" 
+                           name="email" 
+                           [class.is-invalid] = "email.invalid && email.touched" 
+                           required
+                           [(ngModel)]=usuarioId.email  
+                           id="email"
+                           #email ="ngModel">
+                           <small *ngIf="email.invalid && email.touched" 
+                           class="form-text text-danger">Correo es requerido</small>
+                </div>
+
+                <div class="form-group mb-3">
+                    <label for="contrasenaUsuario" class="form-label">Contraseña</label>
+                    <input class="form-control"
+                           type="text" 
+                           name="password" 
+                           [class.is-invalid] = "password.invalid && password.touched" 
+                           required
+                           [(ngModel)]=usuarioId.password  
+                           id="password"
+                           #password ="ngModel">
+                           <small *ngIf="password.invalid && password.touched" 
+                           class="form-text text-danger">Contraseña es requerido</small>
+                </div>
+  
+                <div class="modal-footer">
+                  <button type="submit" class="btn btn-primary" (click)="actualizarUsuarioForm(formUsuarioActualizar)" data-dismiss="modal">Guardar</button>
+                  <button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
+                </div>
+            </form>
+  
+            </div>
+          </div>
+        </div>
+    </div>
+
+</div>

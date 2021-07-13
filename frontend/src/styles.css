@@ -1,0 +1,18 @@
+/* You can add global styles to this file, and also import other style files */
+
+.abs-center {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+  }
+
+.border-login{
+    padding: 40px 40px 40px 40px;
+    border: 1px solid #dee2e6!important;
+}
+
+/* .body{
+  font-family: "Century Gothic";
+}
+ */

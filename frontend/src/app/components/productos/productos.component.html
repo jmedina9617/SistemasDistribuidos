@@ -1,0 +1,287 @@
+
+<app-navbar></app-navbar>
+
+<div class="m-4">
+
+    <button class="btn btn-primary mb-4 float-left" type="button"  data-toggle="modal" data-target="#crearProducto">
+        <i class="fas fa-plus"></i>
+        Nuevo producto
+    </button><br>
+
+    <!-- Modal Crear Conductor -->
+
+    <div class="modal fade" id="crearProducto" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Nuevo Producto</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              
+            <form (ngSubmit)="productoForm(formProducto)" #formProducto="ngForm">
+
+                <!-- nombre | direccion | email | password | telefono | nroPlaca | fechaNacimiento -->
+                
+                <div class="form-group mb-3">
+                    <label for="tipoProducto" class="form-label">Tipo</label>
+                    <select class="form-control custom-select" 
+                            id="inputGroupSelect02"
+                            name= "tipo"
+                            required
+                            ngModel
+                            #tipo= "ngModel">
+                      <option selected disabled>-Opciones-</option>
+                      <option value="Abarrotes">Abarrotes</option>
+                      <option value="Gaseosas">Gaseosas</option> 
+                    </select>
+                </div>
+
+                <div class="form-group mb-3">
+                  <label for="nombreProducto" class="form-label">Nombre</label>
+                  <input class="form-control"
+                         type="text" 
+                         name="nombre" 
+                         [class.is-invalid] = "nombre.invalid && nombre.touched" 
+                         required
+                         ngModel 
+                         id="nombre"
+                         #nombre ="ngModel">
+                         <small *ngIf="nombre.invalid && nombre.touched" 
+                         class="form-text text-danger">Nombre es requerido</small>
+                </div>
+
+                <div class="form-group mb-3">
+                    <label for="unidadMedida" class="form-label">Unidad de Medida</label>
+                    <select class="form-control custom-select" 
+                            id="inputGroupSelect02"
+                            name= "unidad"
+                            required
+                            ngModel
+                            #unidad= "ngModel">
+                      <option selected disabled>-Opciones-</option>
+                      <option value="kilos">Kilos</option>
+                      <option value="litros">Litros</option> 
+                    </select>
+                </div>
+
+                <div class="form-group mb-3">
+                    <label for="cantidadProducto" class="form-label">Cantidad</label>
+                    <input class="form-control"
+                           type="number" 
+                           name="cantidad" 
+                           [class.is-invalid] = "cantidad.invalid && cantidad.touched" 
+                           required
+                           ngModel 
+                           id="cantidad"
+                           #cantidad ="ngModel">
+                           <small *ngIf="cantidad.invalid && cantidad.touched" 
+                           class="form-text text-danger">Cantidad es requerido</small>
+                </div>
+
+                <div class="form-group mb-3">
+                    <label for="precioProducto" class="form-label">Precio</label>
+                    <input class="form-control"
+                           type="number" 
+                           name="precio" 
+                           [class.is-invalid] = "precio.invalid && precio.touched" 
+                           required
+                           ngModel 
+                           id="precio"
+                           #precio ="ngModel">
+                           <small *ngIf="precio.invalid && precio.touched" 
+                           class="form-text text-danger">Precio es requerido</small>
+                </div>
+  
+                <div class="modal-footer">
+                  <button type="submit" class="btn btn-primary" (click)="productoForm(formProducto)" data-dismiss="modal">Guardar</button>
+                  <button type="button" class="btn btn-danger"  data-dismiss="modal">Cancelar</button>
+                </div>
+            </form>
+  
+            </div>
+          </div>
+        </div>
+    </div>
+
+    <div class="container m-3" style="text-align: center;">
+        <h1>Productos</h1>
+    </div>
+
+
+    <!-- Tabla Conductores -->
+
+    <table class="table table-striped">
+        <thead>
+          <tr>
+            <th scope="col">ID</th>
+            <th scope="col">Tipo</th>
+            <th scope="col">Nombre</th>
+            <th scope="col">UM</th>
+            <th scope="col">Cantidad</th>
+            <th scope="col">Precio</th>
+            <th scope="col">Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let producto of productosData; let i = index">
+            <th scope="row">{{i+1}}</th>
+            <td>{{producto.tipo}}</td>
+            <td>{{producto.nombre}}</td>
+            <td>{{producto.unidadMedida}}</td>
+            <td>{{producto.cantidad}}</td>
+            <td>{{producto.precio}}</td>
+            <td>
+                <button (click)="productoById(producto._id)" 
+                        class="btn btn-primary mr-1"
+                        data-toggle="modal" 
+                        data-target="#actualizarConductor">
+                    <i class="fas fa-pen"></i>
+                </button>
+                <button class="btn btn-danger mr-1"
+                        (click)="eliminarConductor(producto._id)">
+                    <i class="fas fa-trash"></i>
+                </button>
+            </td>
+          </tr>
+        </tbody>
+    </table>
+
+    <!-- Modal Actualizar Conductor -->
+<!-- 
+    <div class="modal fade" id="actualizarConductor" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Actualizar Conductor</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              
+            <form (ngSubmit)="actualizarConductorForm(formConductorActualizar)" #formConductorActualizar="ngForm">
+
+  
+                
+                <div hidden class="form-group mb-3">
+                    <label for="nombreConductor" class="form-label">Nombres Completos</label>
+                    <input class="form-control"
+                           type="text" 
+                           name="_id" 
+                           [(ngModel)]=conductorId._id 
+                           id="_id"
+                           #_id ="ngModel">
+                </div>
+
+                <div class="form-group mb-3">
+                  <label for="nombreConductor" class="form-label">Nombres Completos</label>
+                  <input class="form-control"
+                         type="text" 
+                         name="nombre" 
+                         [class.is-invalid] = "nombre.invalid && nombre.touched" 
+                         required
+                         [(ngModel)]=conductorId.nombre 
+                         id="nombre"
+                         #nombre ="ngModel">
+                         <small *ngIf="nombre.invalid && nombre.touched" 
+                         class="form-text text-danger">Nombre es requerido</small>
+                </div>
+
+                <div class="form-group mb-3">
+                  <label for="direccionConductor" class="form-label">Direccion</label>
+                  <input class="form-control"
+                         type="text" 
+                         name="direccion" 
+                         [class.is-invalid] = "direccion.invalid && direccion.touched" 
+                         required
+                         [(ngModel)]=conductorId.direccion 
+                         id="direccion"
+                         #direccion ="ngModel">
+                         <small *ngIf="direccion.invalid && direccion.touched" 
+                         class="form-text text-danger">Direccion es requerido</small>
+                </div>
+
+                <div class="form-group mb-3">
+                  <label for="correoConductor" class="form-label">Correo</label>
+                  <input class="form-control"
+                         type="email" 
+                         name="email" 
+                         [class.is-invalid] = "email.invalid && email.touched" 
+                         required
+                         [(ngModel)]=conductorId.email 
+                         id="email"
+                         #email ="ngModel">
+                         <small *ngIf="email.invalid && email.touched" 
+                         class="form-text text-danger">Correo es requerido</small>
+                </div>
+
+                <div class="form-group mb-3">
+                  <label for="contrasenaConductor" class="form-label">Contraseña</label>
+                  <input class="form-control"
+                         type="text" 
+                         name="password" 
+                         [class.is-invalid] = "password.invalid && password.touched" 
+                         
+                         [(ngModel)]=conductorId.password 
+                         id="password"
+                         #password ="ngModel">
+                         <small *ngIf="password.invalid && password.touched" 
+                         class="form-text text-danger">Contraseña es requerido</small>
+                </div>
+
+                <div class="form-group mb-3">
+                  <label for="telefonoConductor" class="form-label">Telefono</label>
+                  <input class="form-control"
+                         type="number" 
+                         name="telefono" 
+                         [class.is-invalid] = "telefono.invalid && telefono.touched" 
+                         required
+                         [(ngModel)]=conductorId.telefono 
+                         id="telefono"
+                         #telefono ="ngModel">
+                         <small *ngIf="telefono.invalid && telefono.touched" 
+                         class="form-text text-danger">Telefono es requerido</small>
+                </div>
+
+                <div class="form-group mb-3">
+                  <label for="nroPlacaConductor" class="form-label">Numero de placa</label>
+                  <input class="form-control"
+                         type="text" 
+                         name="nroPlaca" 
+                         [class.is-invalid] = "nroPlaca.invalid && nroPlaca.touched" 
+                         required
+                         [(ngModel)]=conductorId.nroPlaca 
+                         id="nroPlaca"
+                         #nroPlaca ="ngModel">
+                         <small *ngIf="nroPlaca.invalid && nroPlaca.touched" 
+                         class="form-text text-danger">Nro de placa es requerido</small>
+                </div>
+
+                <div class="form-group mb-3">
+                    <label for="fechaNacimientoConductor" class="form-label">Fecha nacimiento</label>
+                    <input type ="date" 
+                           id="todays-date" 
+                           value="" 
+                           class="form-control"
+                           name="fechaNacimiento"
+                           required
+                           [(ngModel)]=conductorId.fechaNacimiento
+                           id="fechaNacimiento"
+                           #fechaNacimiento="ngModel">
+                </div>
+  
+                <div class="modal-footer">
+                  <button type="submit" class="btn btn-primary" (click)="actualizarConductorForm(formConductorActualizar)" data-dismiss="modal">Guardar</button>
+                  <button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
+                </div>
+            </form>
+  
+            </div>
+          </div>
+        </div>
+    </div>
+ -->
+</div>
